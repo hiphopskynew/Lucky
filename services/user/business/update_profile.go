@@ -32,7 +32,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userProfile := usermodels.UserProfile{FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address}
+	userProfile := usermodels.UserProfile{ID: pid, FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address, UserIDRef: id}
 	session := mysql.New()
 	defer session.Close()
 

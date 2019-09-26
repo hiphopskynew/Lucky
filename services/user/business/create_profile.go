@@ -32,7 +32,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	general.ParseToStruct(bytes, request)
-	userProfile := usermodels.UserProfile{ID: general.GenerateID(constants.PrefixUser), FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address}
+	userProfile := usermodels.UserProfile{ID: general.GenerateID(constants.PrefixProfile), FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address}
 	session := mysql.New()
 	defer session.Close()
 

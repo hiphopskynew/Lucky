@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS UserProfile (
     last_name TEXT NOT NULL,
     date_of_birth TEXT,
     address TEXT,
-    user_id INT references User(id)
+    user_id VARCHAR(255) references User(id)
 ) ENGINE=INNODB;

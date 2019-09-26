@@ -2,6 +2,7 @@ package validators
 
 import (
 	"database/sql"
+	"lucky/constants"
 	"lucky/services/user/models"
 )
 
@@ -26,6 +27,24 @@ func HasProfileExist(session *sql.DB, id string, pid string) bool {
 func HasProfileByUserIDExist(session *sql.DB, id string) bool {
 	userProfileModelID := models.UserProfile{}
 	err := session.QueryRow("SELECT id FROM UserProfile WHERE user_id=?", id).Scan(&userProfileModelID.ID)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func HasEmailExist(session *sql.DB, email string) bool {
+	user := models.User{}
+	err := session.QueryRow("SELECT id FROM User WHERE email=?", email).Scan(&user.ID)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func IsStatusNew(session *sql.DB, email string) bool {
+	user := models.User{}
+	err := session.QueryRow("SELECT id FROM User WHERE email=? AND status=?", email, constants.StatusNew).Scan(&user.ID)
 	if err != nil {
 		return false
 	}

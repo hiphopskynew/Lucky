@@ -22,7 +22,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		users = append(users, user)
 	}
 	if len(users) == 0 {
-		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "user not found"}}, http.StatusNotFound)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "user does not exist"}}, http.StatusNotFound)
 		return
 	}
 	general.JsonResponse(w, constants.M{constants.KeyData: general.InterfaceToSliceM(users)}, http.StatusOK)

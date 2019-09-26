@@ -7,6 +7,7 @@ const (
 
 const (
 	PrefixUser       = "user"
+	PrefixProfile    = "prof"
 	PrefixUserVerify = "userverify"
 )
 

@@ -53,6 +53,6 @@ func GenerateJWTToken(payload interface{}) string {
 func JsonResponse(w http.ResponseWriter, result interface{}, status int) {
 	bytes, _ := json.Marshal(result)
 	w.Header().Add("Content-Type", "application/json")
-	w.Write(bytes)
 	w.WriteHeader(status)
+	w.Write(bytes)
 }
