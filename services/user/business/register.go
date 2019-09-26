@@ -32,5 +32,5 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	stdout.Info("verify token: ", token)
-	general.JsonResponse(w, constants.M{constants.KeyData: general.InterfaceToM(user)})
+	general.JsonResponse(w, constants.M{constants.KeyData: general.InterfaceToM(user)}, http.StatusCreated)
 }

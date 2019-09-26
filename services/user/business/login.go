@@ -24,10 +24,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		panic(selErr)
 	}
 	if !sel.Next() {
-		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "email or password is invalid"}})
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "email or password is invalid"}}, http.StatusBadRequest)
 		return
 	}
 	var id string
 	sel.Scan(&id)
-	general.JsonResponse(w, constants.M{constants.KeyData: constants.M{constants.KeyToken: general.GenerateJWTToken(id)}})
+	general.JsonResponse(w, constants.M{constants.KeyData: constants.M{constants.KeyToken: general.GenerateJWTToken(id)}}, http.StatusOK)
 }

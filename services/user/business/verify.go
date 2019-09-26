@@ -27,12 +27,12 @@ func Verify(w http.ResponseWriter, r *http.Request) {
 	}
 	uv := new(usermodels.UserVerify)
 	if !sel.Next() {
-		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "token is invalid"}})
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "token is invalid"}}, http.StatusBadRequest)
 		return
 	}
 	sel.Scan(&uv.ID, &uv.Email, &uv.Token, &uv.CreatedAt)
 	if _, err := session.Query("UPDATE User SET status=? WHERE email=?", constants.StatusVerified, uv.Email); err != nil {
 		panic(err)
 	}
-	general.JsonResponse(w, constants.M{constants.KeyData: constants.M{constants.KeyEmail: uv.Email, constants.KeyStatus: constants.StatusVerified}})
+	general.JsonResponse(w, constants.M{constants.KeyData: constants.M{constants.KeyEmail: uv.Email, constants.KeyStatus: constants.StatusVerified}}, http.StatusOK)
 }

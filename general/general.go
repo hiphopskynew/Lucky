@@ -22,7 +22,7 @@ func GenerateToken() string {
 	for i := 0; i < 5; i++ {
 		token += uuid.New().String()
 	}
-	return strings.ReplaceAll(token, "-", "")
+	return strings.Replace(token, "-", "", -1)
 }
 
 func ParseToStruct(bytes []byte, model interface{}) {
@@ -50,9 +50,9 @@ func GenerateJWTToken(payload interface{}) string {
 	return codec.Encode(payload)
 }
 
-func JsonResponse(w http.ResponseWriter, result interface{}) {
+func JsonResponse(w http.ResponseWriter, result interface{}, status int) {
 	bytes, _ := json.Marshal(result)
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(bytes)
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(status)
 }

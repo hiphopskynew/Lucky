@@ -22,6 +22,11 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/users/register", userbiz.Register).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/verify", userbiz.Verify).Methods(http.MethodPost)
 
+	router.HandleFunc("/api/users/{id}/profile", userbiz.GetProfileByUserID).Methods(http.MethodGet)
+	router.HandleFunc("/api/users/{id}/profile", userbiz.CreateProfile).Methods(http.MethodPost)
+	router.HandleFunc("/api/users/{id}/profiles/{pid}", userbiz.UpdateProfile).Methods(http.MethodPut)
+	router.HandleFunc("/api/users/{id}/profiles/{pid}", userbiz.DeleteProfile).Methods(http.MethodDelete)
+
 	// Profile Management
 
 	return router

@@ -5,12 +5,12 @@
   },
   "repository": {
     "mysql": {
-      "host": "wsl",
+      "host": "localhost",
       "port": "3306",
       "database": "lucky",
       "credentials": {
-        "username": "root",
-        "password": "password1234"
+        "username": "siggy",
+        "password": "1234"
       }
     }
   }
