@@ -26,6 +26,16 @@
 
 ### Json Error Cases
 
+#### Status: 404
+
+```json
+{
+    "error": {
+        "message": "user not found"
+    }
+}
+```
+
 #### Status: 400
 
 ```json

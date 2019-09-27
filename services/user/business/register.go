@@ -8,6 +8,8 @@ import (
 	"lucky/services/user/validators"
 	"net/http"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +39,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := session.Query("INSERT INTO User(id, email, password, status, created_at, updated_at) VALUES(?,?,?,?,?,?)", user.ID, user.Email, request.Password, user.Status, user.CreatedAt, user.UpdatedAt); err != nil {
+	pHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.MinCost)
+	if err != nil {
+		panic(err)
+	}
+
+	if _, err := session.Query("INSERT INTO User(id, email, password, status, created_at, updated_at) VALUES(?,?,?,?,?,?)", user.ID, user.Email, string(pHash), user.Status, user.CreatedAt, user.UpdatedAt); err != nil {
 		panic(err)
 	}
 	token := general.GenerateToken()

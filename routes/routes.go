@@ -18,6 +18,7 @@ func Router() *mux.Router {
 
 	// User Management
 	router.HandleFunc("/api/users", userbiz.GetUsers).Methods(http.MethodGet)
+	router.HandleFunc("/api/users/profiles", userbiz.GetUsersProfiles).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/{id}", userbiz.GetUserByID).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/login", userbiz.Login).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/register", userbiz.Register).Methods(http.MethodPost)
