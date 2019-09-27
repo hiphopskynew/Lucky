@@ -11,6 +11,10 @@ import (
 )
 
 func GetUserByID(w http.ResponseWriter, r *http.Request) {
+	if message, isAuthen := general.IsInvalidToken(r); !isAuthen {
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: message}}, http.StatusUnauthorized)
+		return
+	}
 	id := mux.Vars(r)["id"]
 	session := mysql.New()
 	defer session.Close()

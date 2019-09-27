@@ -9,6 +9,10 @@ import (
 )
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
+	if message, isAuthen := general.IsInvalidToken(r); !isAuthen {
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: message}}, http.StatusUnauthorized)
+		return
+	}
 	session := mysql.New()
 	defer session.Close()
 	sel, selErr := session.Query("SELECT id, email, password, status, created_at, updated_at FROM User")

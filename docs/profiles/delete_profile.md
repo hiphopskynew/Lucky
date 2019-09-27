@@ -24,3 +24,23 @@
     }
 }
 ```
+
+#### Status: 401
+
+```json
+{
+    "error": {
+        "message": "unauthorized access"
+    }
+}
+```
+
+#### Status: 401
+
+```json
+{
+    "error": {
+        "message": "token is invalid"
+    }
+}
+```

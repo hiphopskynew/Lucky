@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"lucky/constants"
 	"lucky/general"
+	profilemodels "lucky/services/profile/models"
 	"lucky/services/repository/mysql"
-	usermodels "lucky/services/user/models"
 	"lucky/services/user/validators"
 	"net/http"
 	"regexp"
@@ -20,6 +20,10 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 		DateOfBirth string `json:"date_of_birth"`
 		Address     string `json:"address"`
 	}
+	if message, isAuthen := general.IsInvalidToken(r); !isAuthen {
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: message}}, http.StatusUnauthorized)
+		return
+	}
 	id := mux.Vars(r)["id"]
 	bytes, _ := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
@@ -32,7 +36,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	general.ParseToStruct(bytes, request)
-	userProfile := usermodels.UserProfile{ID: general.GenerateID(constants.PrefixProfile), FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address}
+	userProfile := profilemodels.UserProfile{ID: general.GenerateID(constants.PrefixProfile), FirstName: request.FirstName, LastName: request.LastName, DateOfBirth: request.DateOfBirth, Address: request.Address}
 	session := mysql.New()
 	defer session.Close()
 

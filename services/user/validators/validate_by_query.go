@@ -3,11 +3,12 @@ package validators
 import (
 	"database/sql"
 	"lucky/constants"
-	"lucky/services/user/models"
+	profmodels "lucky/services/profile/models"
+	usermodels "lucky/services/user/models"
 )
 
 func HasUserExist(session *sql.DB, id string) bool {
-	userModelID := models.User{}
+	userModelID := usermodels.User{}
 	err := session.QueryRow("SELECT id FROM User WHERE id=?", id).Scan(&userModelID.ID)
 	if err != nil {
 		return false
@@ -16,7 +17,7 @@ func HasUserExist(session *sql.DB, id string) bool {
 }
 
 func HasProfileExist(session *sql.DB, id string, pid string) bool {
-	userProfileModelID := models.UserProfile{}
+	userProfileModelID := profmodels.UserProfile{}
 	err := session.QueryRow("SELECT id FROM UserProfile WHERE user_id=? AND id=?", id, pid).Scan(&userProfileModelID.ID)
 	if err != nil {
 		return false
@@ -25,7 +26,7 @@ func HasProfileExist(session *sql.DB, id string, pid string) bool {
 }
 
 func HasProfileByUserIDExist(session *sql.DB, id string) bool {
-	userProfileModelID := models.UserProfile{}
+	userProfileModelID := profmodels.UserProfile{}
 	err := session.QueryRow("SELECT id FROM UserProfile WHERE user_id=?", id).Scan(&userProfileModelID.ID)
 	if err != nil {
 		return false
@@ -34,7 +35,7 @@ func HasProfileByUserIDExist(session *sql.DB, id string) bool {
 }
 
 func HasEmailExist(session *sql.DB, email string) bool {
-	user := models.User{}
+	user := usermodels.User{}
 	err := session.QueryRow("SELECT id FROM User WHERE email=?", email).Scan(&user.ID)
 	if err != nil {
 		return false
@@ -43,7 +44,7 @@ func HasEmailExist(session *sql.DB, email string) bool {
 }
 
 func IsStatusNew(session *sql.DB, email string) bool {
-	user := models.User{}
+	user := usermodels.User{}
 	err := session.QueryRow("SELECT id FROM User WHERE email=? AND status=?", email, constants.StatusNew).Scan(&user.ID)
 	if err != nil {
 		return false

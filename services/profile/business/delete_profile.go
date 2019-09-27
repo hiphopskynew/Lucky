@@ -13,6 +13,10 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 	type Response struct {
 		Deleted bool `json:"deleted"`
 	}
+	if message, isAuthen := general.IsInvalidToken(r); !isAuthen {
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: message}}, http.StatusUnauthorized)
+		return
+	}
 	id := mux.Vars(r)["id"]
 	pid := mux.Vars(r)["pid"]
 

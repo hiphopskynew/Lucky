@@ -2,6 +2,7 @@ package routes
 
 import (
 	hcbiz "lucky/services/healthcheck/business"
+	profbiz "lucky/services/profile/business"
 	userbiz "lucky/services/user/business"
 	"net/http"
 
@@ -22,10 +23,10 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/users/register", userbiz.Register).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/verify", userbiz.Verify).Methods(http.MethodPost)
 
-	router.HandleFunc("/api/users/{id}/profile", userbiz.GetProfileByUserID).Methods(http.MethodGet)
-	router.HandleFunc("/api/users/{id}/profile", userbiz.CreateProfile).Methods(http.MethodPost)
-	router.HandleFunc("/api/users/{id}/profiles/{pid}", userbiz.UpdateProfile).Methods(http.MethodPut)
-	router.HandleFunc("/api/users/{id}/profiles/{pid}", userbiz.DeleteProfile).Methods(http.MethodDelete)
+	router.HandleFunc("/api/users/{id}/profile", profbiz.GetProfileByUserID).Methods(http.MethodGet)
+	router.HandleFunc("/api/users/{id}/profile", profbiz.CreateProfile).Methods(http.MethodPost)
+	router.HandleFunc("/api/users/{id}/profiles/{pid}", profbiz.UpdateProfile).Methods(http.MethodPut)
+	router.HandleFunc("/api/users/{id}/profiles/{pid}", profbiz.DeleteProfile).Methods(http.MethodDelete)
 
 	// Profile Management
 

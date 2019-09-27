@@ -50,6 +50,24 @@ func GenerateJWTToken(payload interface{}) string {
 	return codec.Encode(payload)
 }
 
+func IsInvalidToken(req *http.Request) (msg string, is bool) {
+	token := req.Header.Get("authorization")
+	if token == "" {
+		msg = "unauthorized access"
+		is = false
+		return
+	}
+	secret := configs.Setting.Jwt.Secret
+	codec := jwt.Config(secret)
+	if _, err := codec.Decode(token); err != nil {
+		msg = "token is invalid"
+		is = false
+		return
+	}
+	is = true
+	return
+}
+
 func JsonResponse(w http.ResponseWriter, result interface{}, status int) {
 	bytes, _ := json.Marshal(result)
 	w.Header().Add("Content-Type", "application/json")
