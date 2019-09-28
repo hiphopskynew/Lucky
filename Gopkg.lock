@@ -3,43 +3,79 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:bb77680c485ce288ccfbc3b018872bfd4e1335cc585084eb24b8cf516d7d381c"
   name = "bitbucket.org/sparkmaker/gohelper"
-  packages = ["jwt","logger/stdout"]
+  packages = [
+    "jwt",
+    "validator",
+    "validator/flatten",
+    "validator/rule",
+  ]
+  pruneopts = "UT"
   revision = "60971674934366f929b3b7fdcd075a0280c84b37"
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
+  pruneopts = "UT"
   revision = "72cd26f257d44c1114970e19afddcd812016007e"
   version = "v1.4.1"
 
 [[projects]]
+  digest = "1:582b704bebaa06b48c29b0cec224a6058a09c86883aaddabde889cd1a5f73e1b"
   name = "github.com/google/uuid"
   packages = ["."]
+  pruneopts = "UT"
   revision = "0cd6bf5da1e1c83f8b45653022c74f71af0538a4"
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:cbec35fe4d5a4fba369a656a8cd65e244ea2c743007d8f6c1ccb132acf9d1296"
   name = "github.com/gorilla/mux"
   packages = ["."]
+  pruneopts = "UT"
   revision = "00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15"
   version = "v1.7.3"
 
 [[projects]]
+  branch = "master"
+  digest = "1:9d5b5d543996dd584da1db1e0de1926f3e4c3a8dba0fa2f8db70f3ebee2342e0"
+  name = "golang.org/x/crypto"
+  packages = [
+    "bcrypt",
+    "blowfish",
+  ]
+  pruneopts = "UT"
+  revision = "a832865fa7ada6126f4c6124ac49f71be71bff2a"
+
+[[projects]]
+  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
+  pruneopts = "UT"
   revision = "c71d63e301d75423acb410203c747cad31e9a5e7"
   version = "v1.6.3"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "01a4be621de300c6db040c3ad7b50e0b96772dad4d1a9d3ede0576af1f1f4165"
+  input-imports = [
+    "bitbucket.org/sparkmaker/gohelper/jwt",
+    "bitbucket.org/sparkmaker/gohelper/validator",
+    "bitbucket.org/sparkmaker/gohelper/validator/rule",
+    "github.com/go-sql-driver/mysql",
+    "github.com/google/uuid",
+    "github.com/gorilla/mux",
+    "golang.org/x/crypto/bcrypt",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
