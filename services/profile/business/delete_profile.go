@@ -24,12 +24,14 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 	defer session.Close()
 	del, err := session.Exec("DELETE FROM UserProfile where id = ? AND user_id = ?", pid, id)
 	if err != nil {
-		panic(err)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: err.Error()}}, http.StatusInternalServerError)
+		return
 	}
 
 	resp := Response{}
 	if c, err := del.RowsAffected(); err != nil {
-		panic(err)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: err.Error()}}, http.StatusInternalServerError)
+		return
 	} else if c > 0 {
 		resp = Response{Deleted: true}
 	} else {

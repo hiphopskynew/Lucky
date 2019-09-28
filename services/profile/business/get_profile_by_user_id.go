@@ -20,7 +20,8 @@ func GetProfileByUserID(w http.ResponseWriter, r *http.Request) {
 	defer session.Close()
 	sel, selErr := session.Query("SELECT id, first_name, last_name, date_of_birth, address, user_id FROM UserProfile WHERE user_id=?", id)
 	if selErr != nil {
-		panic(selErr)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: selErr.Error()}}, http.StatusInternalServerError)
+		return
 	}
 	userProfile := new(profilemodels.UserProfile)
 	if !sel.Next() {

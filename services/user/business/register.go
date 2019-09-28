@@ -9,8 +9,17 @@ import (
 	"net/http"
 	"time"
 
+	"bitbucket.org/sparkmaker/gohelper/validator"
+	"bitbucket.org/sparkmaker/gohelper/validator/rule"
 	"golang.org/x/crypto/bcrypt"
 )
+
+func validateRegister(data string) []rule.Failure {
+	rules := validator.New(data)
+	rules.AddRule("email", rule.Required(), rule.IsString(), rule.NonEmpty(), rule.Format(regexEmailFormat), rule.MaxLength(50))
+	rules.AddRule("password", rule.Required(), rule.IsString(), rule.NonEmpty(), rule.MinLength(8), rule.MaxLength(140))
+	return general.MergeValidates(rules.Validate())
+}
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	type Request struct {
@@ -27,6 +36,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bytes, _ := ioutil.ReadAll(r.Body)
+
+	failures := validateRegister(string(bytes))
+	if len(failures) > 0 {
+		general.JsonResponse(w, constants.M{constants.KeyError: failures}, http.StatusBadRequest)
+		return
+	}
+
 	defer r.Body.Close()
 	request := new(Request)
 	general.ParseToStruct(bytes, request)
@@ -41,15 +57,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	pHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.MinCost)
 	if err != nil {
-		panic(err)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: err.Error()}}, http.StatusInternalServerError)
+		return
 	}
 
 	if _, err := session.Query("INSERT INTO User(id, email, password, status, created_at, updated_at) VALUES(?,?,?,?,?,?)", user.ID, user.Email, string(pHash), user.Status, user.CreatedAt, user.UpdatedAt); err != nil {
-		panic(err)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: err.Error()}}, http.StatusInternalServerError)
+		return
 	}
 	token := general.GenerateToken()
 	if _, err := session.Query("INSERT INTO UserVerify(id, email, token, created_at) VALUES(?,?,?,?)", general.GenerateID(constants.PrefixUserVerify), user.Email, token, time.Now()); err != nil {
-		panic(err)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: err.Error()}}, http.StatusInternalServerError)
+		return
 	}
 
 	user.Token = token

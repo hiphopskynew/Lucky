@@ -18,18 +18,17 @@ func Router() *mux.Router {
 
 	// User Management
 	router.HandleFunc("/api/users", userbiz.GetUsers).Methods(http.MethodGet)
-	router.HandleFunc("/api/users/profiles", userbiz.GetUsersProfiles).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/{id}", userbiz.GetUserByID).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/login", userbiz.Login).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/register", userbiz.Register).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/verify", userbiz.Verify).Methods(http.MethodPost)
 
+	// Profile Management
+	router.HandleFunc("/api/users/profiles", userbiz.GetUsersProfiles).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/{id}/profile", profbiz.GetProfileByUserID).Methods(http.MethodGet)
 	router.HandleFunc("/api/users/{id}/profile", profbiz.CreateProfile).Methods(http.MethodPost)
 	router.HandleFunc("/api/users/{id}/profiles/{pid}", profbiz.UpdateProfile).Methods(http.MethodPut)
 	router.HandleFunc("/api/users/{id}/profiles/{pid}", profbiz.DeleteProfile).Methods(http.MethodDelete)
-
-	// Profile Management
 
 	return router
 }

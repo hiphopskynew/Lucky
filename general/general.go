@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.org/sparkmaker/gohelper/validator/rule"
+
 	"bitbucket.org/sparkmaker/gohelper/jwt"
 	"github.com/google/uuid"
 )
@@ -43,6 +45,11 @@ func InterfaceToM(v interface{}) constants.M {
 	return m
 }
 
+func InterfaceToString(v interface{}) string {
+	bytes, _ := json.Marshal(v)
+	return string(bytes)
+}
+
 func GenerateJWTToken(payload interface{}) string {
 	secret := configs.Setting.Jwt.Secret
 	expired := configs.Setting.Jwt.Expired
@@ -66,6 +73,52 @@ func IsInvalidToken(req *http.Request) (msg string, is bool) {
 	}
 	is = true
 	return
+}
+
+func aggregate(fs []rule.Failure) []rule.Failure {
+	malformed := "malformed json"
+	result := []rule.Failure{}
+	unique := func(l []string) []string {
+		m := make(map[string]interface{})
+		r := []string{}
+		for _, v := range l {
+			m[v] = nil
+		}
+		for k := range m {
+			r = append(r, k)
+		}
+		return r
+	}
+	find := func(e rule.Failure) int {
+		for i, v := range result {
+			if v.Key == e.Key {
+				return i
+			}
+		}
+		return -1
+	}
+	for _, f := range fs {
+		if len(f.Key) == 0 && len(f.Messages) != 0 && f.Messages[0] == malformed {
+			return []rule.Failure{f}
+		}
+		rIndex := find(f)
+		if rIndex != -1 {
+			result[rIndex].Messages = unique(append(result[rIndex].Messages, f.Messages...))
+			continue
+		} else {
+			f.Messages = unique(f.Messages)
+		}
+		result = append(result, f)
+	}
+	return result
+}
+
+func MergeValidates(failures ...[]rule.Failure) []rule.Failure {
+	fsr := []rule.Failure{}
+	for _, fs := range failures {
+		fsr = append(fsr, fs...)
+	}
+	return aggregate(fsr)
 }
 
 func JsonResponse(w http.ResponseWriter, result interface{}, status int) {

@@ -17,7 +17,8 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	defer session.Close()
 	sel, selErr := session.Query("SELECT id, email, password, status, created_at, updated_at FROM User")
 	if selErr != nil {
-		panic(selErr)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: selErr.Error()}}, http.StatusInternalServerError)
+		return
 	}
 	users := []usermodels.User{}
 	for sel.Next() {

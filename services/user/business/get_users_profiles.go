@@ -29,7 +29,8 @@ func GetUsersProfiles(w http.ResponseWriter, r *http.Request) {
 	defer session.Close()
 	sel, selErr := session.Query("SELECT User.id, User.email, User.status, User.created_at, User.updated_at, UserProfile.id, UserProfile.first_name, UserProfile.last_name, UserProfile.date_of_birth, UserProfile.address FROM User LEFT JOIN UserProfile ON User.id = UserProfile.user_id")
 	if selErr != nil {
-		panic(selErr)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: selErr.Error()}}, http.StatusInternalServerError)
+		return
 	}
 	usersProfiles := []Response{}
 	for sel.Next() {
@@ -38,7 +39,7 @@ func GetUsersProfiles(w http.ResponseWriter, r *http.Request) {
 		usersProfiles = append(usersProfiles, user)
 	}
 	if len(usersProfiles) == 0 {
-		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "user does not exist"}}, http.StatusNotFound)
+		general.JsonResponse(w, constants.M{constants.KeyError: constants.M{constants.KeyMessage: "user profile does not exist"}}, http.StatusNotFound)
 		return
 	}
 	general.JsonResponse(w, constants.M{constants.KeyData: general.InterfaceToSliceM(usersProfiles)}, http.StatusOK)
