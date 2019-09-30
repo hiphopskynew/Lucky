@@ -44,3 +44,22 @@
     }
 }
 ```
+
+#### Status: 400
+
+##### Fields validate
+
+- token
+    - required
+
+```json
+{
+    "error": [
+        {
+            "key": "???",
+            "messages": [
+                "?????"
+            ]
+        }
+    ]
+}

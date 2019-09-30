@@ -1,8 +1,8 @@
 package rule
 
 type Failure struct {
-	Key      string
-	Messages []string
+	Key      string   `json:"key"`
+	Messages []string `json:"messages"`
 }
 type Rule func(key string, value interface{}) *Failure
 

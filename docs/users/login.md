@@ -45,3 +45,28 @@
     }
 }
 ```
+
+#### Status: 400
+
+##### Fields validate
+
+- email
+    - required
+    - email format
+    - max length 50
+- password
+    - required
+    - min length 8
+    - max length 140
+
+```json
+{
+    "error": [
+        {
+            "key": "???",
+            "messages": [
+                "?????"
+            ]
+        }
+    ]
+}

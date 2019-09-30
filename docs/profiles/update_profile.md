@@ -81,3 +81,29 @@
     }
 }
 ```
+
+#### Status: 400
+
+##### Fields validate
+
+- first_name
+    - required
+- last_name
+    - required
+- date_of_birth
+    - required
+    - format date
+- address
+    - required
+
+```json
+{
+    "error": [
+        {
+            "key": "???",
+            "messages": [
+                "?????"
+            ]
+        }
+    ]
+}
