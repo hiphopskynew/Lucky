@@ -1,0 +1,17 @@
+{
+  "jwt": {
+    "secret": "jwtsecretkey",
+    "expired": 3600
+  },
+  "repository": {
+    "mysql": {
+      "host": "172.17.0.4",
+      "port": "3306",
+      "database": "lucky",
+      "credentials": {
+        "username": "siggy",
+        "password": "1234"
+      }
+    }
+  }
+}

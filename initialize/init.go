@@ -8,6 +8,7 @@ import (
 	"lucky/configs"
 	"lucky/general"
 	"lucky/services/repository/mysql"
+	"os"
 )
 
 func read(name string) string {
@@ -32,8 +33,14 @@ func exec(s *sql.DB, sql string, tableName string) {
 }
 
 func Init() {
+	var bytes []byte
+	var err error
 	// Read configuration file & initialized to the global variable
-	bytes, err := ioutil.ReadFile("configs/application.json")
+	if os.Getenv("RUN_MODE") == "production" {
+		bytes, err = ioutil.ReadFile("configs/production.json")
+	} else {
+		bytes, err = ioutil.ReadFile("configs/application.json")
+	}
 	if err != nil {
 		panic(err)
 	}
